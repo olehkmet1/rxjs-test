@@ -1,0 +1,20 @@
+<div class="auth">
+    <div class="form">
+      <div class="form__control">
+        <input #emailInput class="form__input" type="text" (blur)="validatePassword(emailControl.value)" placeholder="Email">
+        <div class="form__error" *ngIf="emailControl?.isDirty && !(emailValidationSubject | async)">Invalid email</div>
+      </div>
+      
+      <div class="form__control">
+        <input #passwordInput class="form__input" type="password" (blur)="validatePassword(passwordControl.value)" placeholder="Password">
+        <div class="form__error" *ngIf="passwordControl?.isDirty && !(passValidationSubject | async)">Password should be at least 4 characters</div>
+      </div>
+      
+      <div class="form__control">
+        <input #repeatPasswordInput class="form__input" type="password" (blur)="validateRepeatPassword(repeatPasswordControl.value)" placeholder="Repeat Password">
+        <div class="form__error" *ngIf="repeatPasswordControl?.isDirty && !(repeatPassValidationSubject | async)">Passwords do not match</div>
+      </div>
+      
+      <button (click)="submitForm()" [disabled]="!isFormValid">Register</button>
+    </div>
+  </div>
