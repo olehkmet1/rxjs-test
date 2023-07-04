@@ -1,7 +1,7 @@
 <div class="auth">
     <div class="form">
       <div class="form__control">
-        <input #emailInput class="form__input" type="text" (blur)="validatePassword(emailControl.value)" placeholder="Email">
+        <input #emailInput class="form__input" type="text" (blur)="validateEmail(emailControl.value)" placeholder="Email">
         <div class="form__error" *ngIf="emailControl?.isDirty && !(emailValidationSubject | async)">Invalid email</div>
       </div>
       

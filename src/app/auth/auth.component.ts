@@ -55,9 +55,10 @@ export class AuthComponent implements AfterViewInit {
     this.subscribeInput(repeatPassword$, 'repeatPassword');
     this.subscribeInput(repeatPasswordBlur$, 'repeatPassword');
 
-    combineLatest(this.emailValidationSubject, this.passValidationSubject, this.repeatPassValidationSubject)
+    combineLatest([this.emailValidationSubject, this.passValidationSubject, this.repeatPassValidationSubject])
       .pipe(takeUntil(this.notifier))
       .subscribe(([email, password, repeatPassword]) => {
+        
         if (email && password && repeatPassword) {
           this.isFormValid = email && password && repeatPassword;
         }
@@ -78,16 +79,20 @@ export class AuthComponent implements AfterViewInit {
     )
       .subscribe(
         value => {
+          console.log(type);
+          
           switch (type) {
             case 'email':
-              this.emailControl.isDirty = true;
               this.emailControl.value = value;
-              this.validateEmail(value);
+              if (this.emailControl.isDirty) {
+                this.validateEmail(value);
+              }
               break;
             case 'password':
-              this.passwordControl.isDirty = true;
               this.passwordControl.value = value;
-              this.validatePassword(value);
+              if (this.passwordControl.isDirty === true) {
+                this.validatePassword(value);
+              }
               break;
             case 'repeatPassword':
               this.repeatPasswordControl.value = value;
@@ -100,13 +105,21 @@ export class AuthComponent implements AfterViewInit {
   }
 
   validateEmail(value: string) {
-    const isValid = !!value.length && value.includes('@');
-    this.emailValidationSubject.next(isValid);
+    this.emailControl.isDirty = true;
+
+    if (this.emailControl.isDirty) {
+      const isValid = !!value.length && value.includes('@');
+      this.emailValidationSubject.next(isValid);
+    }
   }
 
   validatePassword(value: string) {
-    const isValid = !!value.length && value.length >= 4;
-    this.passValidationSubject.next(isValid);
+    this.passwordControl.isDirty = true;
+
+    if (this.passwordControl.isDirty) {
+      const isValid = !!value.length && value.length >= 4;
+      this.passValidationSubject.next(isValid);
+    }
   }
 
   validateRepeatPassword(value: string) {
